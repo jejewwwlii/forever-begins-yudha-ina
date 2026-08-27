@@ -729,60 +729,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-
   // ==========================================================================
   // 6. UCAPAN & DOA RESTU
-  // SUPABASE DATABASE
   // ==========================================================================
-
-  /*
-    ========================================================================
-    SUPABASE CONFIGURATION
-    ========================================================================
-
-    GANTI 2 BARIS DI BAWAH INI.
-
-    SUPABASE_URL:
-    ambil dari project Supabase kamu.
-
-    Contoh:
-    https://xxxxxxxxxxxxxxxx.supabase.co
-
-    SUPABASE_KEY:
-    gunakan PUBLISHABLE KEY.
-
-    Contoh:
-    sb_publishable_xxxxxxxxxxxxxxxxx
-
-    JANGAN gunakan:
-    sb_secret_...
-
-    ========================================================================
-  */
-
-
   const SUPABASE_URL =
-    "GANTI_DENGAN_PROJECT_URL_KAMU";
+    "https://pnjwxobwxkuebwckhcmt.supabase.co";
 
 
   const SUPABASE_KEY =
-    "GANTI_DENGAN_PUBLISHABLE_KEY_KAMU";
-
-
-  // --------------------------------------------------------------------------
-  // CEK SUPABASE CLIENT
-  // --------------------------------------------------------------------------
+    "sb_publishable_QbAqTbjpmUTCEoge5v5tEw_RMk92QBx";
 
   let supabaseClient =
     null;
 
-
   if (
     window.supabase &&
     SUPABASE_URL !==
-      "GANTI_DENGAN_PROJECT_URL_KAMU" &&
+      "https://pnjwxobwxkuebwckhcmt.supabase.co" &&
     SUPABASE_KEY !==
-      "GANTI_DENGAN_PUBLISHABLE_KEY_KAMU"
+      "sb_publishable_QbAqTbjpmUTCEoge5v5tEw_RMk92QBx"
   ) {
 
     supabaseClient =
@@ -792,23 +757,15 @@ document.addEventListener('DOMContentLoaded', () => {
       );
 
   } else {
-
     console.warn(
       '⚠️ Supabase belum dikonfigurasi. Periksa SUPABASE_URL dan SUPABASE_KEY.'
     );
-
   }
-
-
-  // --------------------------------------------------------------------------
-  // ELEMENT FORM
-  // --------------------------------------------------------------------------
 
   const rsvpForm =
     document.getElementById(
       'rsvp-form'
     );
-
 
   const rsvpName =
     document.getElementById(
@@ -826,11 +783,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(
       'wishes-list'
     );
-
-
-  // ==========================================================================
-  // FORMAT TANGGAL UCAPAN
-  // ==========================================================================
 
   function formatWishDate(
     timestamp
@@ -867,11 +819,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-
-  // ==========================================================================
-  // CREATE WISH CARD
-  // ==========================================================================
-
   function createWishCard(
     wish
   ) {
@@ -880,12 +827,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.createElement(
         'div'
       );
-
-
-    /*
-      Class ini mengikuti struktur
-      desain Doa Restu yang sudah kamu punya.
-    */
 
     card.className =
       'wish-item';
@@ -958,15 +899,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     `;
 
-
     return card;
 
   }
-
-
-  // ==========================================================================
-  // RENDER WISHES
-  // ==========================================================================
 
   function renderWishes(
     data
@@ -980,10 +915,6 @@ document.addEventListener('DOMContentLoaded', () => {
     wishesList.innerHTML =
       '';
 
-
-    // ------------------------------------------------------------------------
-    // Tidak ada ucapan
-    // ------------------------------------------------------------------------
 
     if (
       !data ||
@@ -1012,11 +943,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-
-    // ------------------------------------------------------------------------
-    // Tampilkan data
-    // ------------------------------------------------------------------------
-
     data.forEach(
       wish => {
 
@@ -1035,21 +961,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-
-  // ==========================================================================
-  // LOAD WISHES FROM SUPABASE
-  // ==========================================================================
-
   async function loadWishes() {
 
     if (!wishesList) {
       return;
     }
-
-
-    // ------------------------------------------------------------------------
-    // Supabase belum dikonfigurasi
-    // ------------------------------------------------------------------------
 
     if (!supabaseClient) {
 
@@ -1091,11 +1007,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
       `;
-
-
-      // ----------------------------------------------------------------------
-      // AMBIL DATA DARI TABLE wishes
-      // ----------------------------------------------------------------------
 
       const {
         data,
@@ -1156,28 +1067,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-
-  // ==========================================================================
-  // SUBMIT FORM UCAPAN KE SUPABASE
-  // ==========================================================================
-
   if (rsvpForm) {
 
     rsvpForm.addEventListener(
       'submit',
       async (e) => {
 
-        // ====================================================================
-        // INI YANG MENCEGAH FORM KEMBALI KE COVER
-        // ====================================================================
-
         e.preventDefault();
         e.stopPropagation();
-
-
-        // --------------------------------------------------------------------
-        // Ambil input
-        // --------------------------------------------------------------------
 
         const name =
           rsvpName
@@ -1189,11 +1086,6 @@ document.addEventListener('DOMContentLoaded', () => {
           rsvpMessage
             ? rsvpMessage.value.trim()
             : '';
-
-
-        // --------------------------------------------------------------------
-        // Validasi nama
-        // --------------------------------------------------------------------
 
         if (!name) {
 
@@ -1211,11 +1103,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
 
-
-        // --------------------------------------------------------------------
-        // Validasi pesan
-        // --------------------------------------------------------------------
-
         if (!message) {
 
           showToast(
@@ -1231,11 +1118,6 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
 
         }
-
-
-        // --------------------------------------------------------------------
-        // Cek koneksi Supabase
-        // --------------------------------------------------------------------
 
         if (!supabaseClient) {
 
@@ -1253,11 +1135,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
 
-
-        // --------------------------------------------------------------------
-        // Tombol submit
-        // --------------------------------------------------------------------
-
         const submitButton =
           rsvpForm.querySelector(
             '.btn-submit'
@@ -1271,10 +1148,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         try {
-
-          // ------------------------------------------------------------------
-          // Disable tombol sementara
-          // ------------------------------------------------------------------
 
           if (submitButton) {
 
@@ -1297,11 +1170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'Mengirim ucapan...'
           );
 
-
-          // ==================================================================
-          // INSERT DATA KE SUPABASE
-          // ==================================================================
-
           const {
             data,
             error
@@ -1323,10 +1191,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .single();
 
 
-          // ------------------------------------------------------------------
-          // Kalau Supabase mengembalikan error
-          // ------------------------------------------------------------------
-
           if (error) {
 
             throw error;
@@ -1335,21 +1199,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
           console.log(
-            '✅ Ucapan berhasil disimpan ke Supabase:',
+            'Ucapan berhasil disimpan ke Supabase:',
             data
           );
 
-
-          // ------------------------------------------------------------------
-          // Kosongkan form
-          // ------------------------------------------------------------------
-
           rsvpForm.reset();
-
-
-          // ------------------------------------------------------------------
-          // Kalau sebelumnya ada pesan "Belum ada ucapan"
-          // ------------------------------------------------------------------
 
           if (wishesList) {
 
@@ -1368,12 +1222,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
           }
 
-
-          // ------------------------------------------------------------------
-          // Tampilkan ucapan yang baru saja dikirim
-          // di paling atas.
-          // ------------------------------------------------------------------
-
           if (
             wishesList &&
             data
@@ -1391,21 +1239,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
           }
 
-
-          // ------------------------------------------------------------------
-          // SUCCESS
-          // ------------------------------------------------------------------
-
           showToast(
             'Ucapan & Doa Restu Berhasil Dikirim! ❤️'
           );
 
 
         } catch (error) {
-
-          // ==================================================================
-          // ERROR
-          // ==================================================================
 
           console.error(
             '❌ Gagal mengirim ucapan ke Supabase:',
@@ -1448,10 +1287,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } finally {
 
-          // ------------------------------------------------------------------
-          // Aktifkan kembali tombol
-          // ------------------------------------------------------------------
-
           if (submitButton) {
 
             submitButton.disabled =
@@ -1475,11 +1310,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
   }
-
-
-  // ==========================================================================
-  // LOAD UCAPAN SAAT WEBSITE DIBUKA
-  // ==========================================================================
 
   loadWishes();
 
