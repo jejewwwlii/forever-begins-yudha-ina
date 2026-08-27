@@ -243,62 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. UCAPAN & DOA (RSVP & WISHES FEED WITH NO DUMMY DATA)
   // ==========================================================================
 
-  const rsvpForm = document.getElementById('rsvp-form');
-  const wishesList = document.getElementById('wishes-list');
-
-  function getSavedWishes() {
-    const saved = localStorage.getItem('yudha_ina_wedding_wishes_v2');
-    if (!saved) return [];
-    try {
-      return JSON.parse(saved);
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function renderWishes() {
-    const wishes = getSavedWishes();
-    if (!wishesList) return;
-
-    wishesList.innerHTML = '';
-
-    if (wishes.length === 0) {
-      wishesList.innerHTML = `
-        <div class="wishes-empty-state">
-          <div class="empty-icon"><i class="fa-regular fa-comments"></i></div>
-          <h4 class="empty-title">Belum Ada Ucapan</h4>
-          <p class="empty-sub">Jadilah yang pertama memberikan doa restu & ucapan indah untuk Yudha & Ina! ✨</p>
-        </div>
-      `;
-      return;
-    }
-
-    wishes.forEach(wish => {
-      const card = document.createElement('div');
-      card.className = 'wish-card-item';
-
-      const initial = wish.name ? wish.name.trim().charAt(0).toUpperCase() : 'T';
-
-      card.innerHTML = `
-        <div class="wish-quote-bg"><i class="fa-solid fa-quote-right"></i></div>
-        <div class="wish-author-row">
-          <div class="wish-avatar-circle">${escapeHTML(initial)}</div>
-          <div class="wish-author-info">
-            <span class="wish-author-name">${escapeHTML(wish.name)}</span>
-          </div>
-        </div>
-        <p class="wish-body-text">${escapeHTML(wish.message)}</p>
-        <div class="wish-footer-row">
-          <i class="fa-regular fa-clock"></i> <span>${escapeHTML(wish.time)}</span>
-        </div>
-      `;
-
-      wishesList.appendChild(card);
-    });
-  }
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx__YnfECQJEpHy0jHYCRt1nV2cAnryGJV6F0V0-1IPhqf29zJjZiZD4m-U_rg3xOmkew/exec";
 
   if (rsvpForm) {
-    rsvpForm.addEventListener('submit', (e) => {
+    rsvpForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const name = document.getElementById('rsvp-name').value.trim();
@@ -306,27 +254,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!name || !message) return;
 
-      const now = new Date();
-      const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} WITA`;
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, message })
+        });
 
-      const newWish = {
-        name: name,
-        message: message,
-        time: `Hari ini, ${timeStr}`
-      };
-
-      const currentWishes = getSavedWishes();
-      currentWishes.unshift(newWish);
-      localStorage.setItem('yudha_ina_wedding_wishes_v2', JSON.stringify(currentWishes));
-
-      renderWishes();
-      rsvpForm.reset();
-
-      showToast('Ucapan & Doa Restu Berhasil Dikirim!');
+        rsvpForm.reset();
+        showToast('Ucapan & Doa Restu Berhasil Dikirim!');
+      } catch (error) {
+        console.error("Gagal mengirim ucapan:", error);
+        showToast('Gagal mengirim ucapan. Coba lagi.');
+      }
     });
   }
-
-  renderWishes();
   
   // ==========================================================================
   // 7. COPY ACCOUNT NUMBER & TOAST FEEDBACK
