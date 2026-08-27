@@ -247,21 +247,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', async (e) => {
+      // Mencegah halaman refresh / kembali ke cover screen
       e.preventDefault();
+      e.stopPropagation();
 
-      const name = document.getElementById('rsvp-name').value.trim();
-      const message = document.getElementById('rsvp-message').value.trim();
+      const nameEl = document.getElementById('rsvp-name');
+      const messageEl = document.getElementById('rsvp-message');
+
+      const name = nameEl ? nameEl.value.trim() : '';
+      const message = messageEl ? messageEl.value.trim() : '';
 
       if (!name || !message) return;
 
+      // Kirim via URLSearchParams agar aman dari batasan CORS Google Apps Script
+      const formData = new URLSearchParams();
+      formData.append('name', name);
+      formData.append('message', message);
+
       try {
+        showToast('Sending message...');
+
         await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: JSON.stringify({ name, message })
+          body: formData.toString()
         });
 
         rsvpForm.reset();
