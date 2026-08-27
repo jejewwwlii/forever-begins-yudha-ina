@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. UCAPAN & DOA (RSVP & WISHES FEED WITH NO DUMMY DATA)
   // ==========================================================================
 
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx__YnfECQJEpHy0jHYCRt1nV2cAnryGJV6F0V0-1IPhqf29zJjZiZD4m-U_rg3xOmkew/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwV0Vy6rsKuvrkdYuL0HuATc1UIPcazR07JjUgtR1P5VJKw67r3o5JW06zYpfJAie8A9Q/exec";
 
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', async (e) => {
