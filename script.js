@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initBotanicalParticles();
 
-  // ==========================================================================
+    // ==========================================================================
   // 2. AUDIO & SYNTHESIZER SOUND SYSTEM ("CAN'T HELP FALLING IN LOVE")
   // ==========================================================================
 
@@ -70,24 +70,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     bgMusic.volume = 0.55;
 
-    bgMusic.play()
-      .then(() => {
-        isAudioPlaying = true;
+    // Pastikan audio di-unlock untuk browser mobile (iOS / Android)
+    const playPromise = bgMusic.play();
 
-        if (musicController) {
-          musicController.classList.add('playing');
-        }
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          isAudioPlaying = true;
 
-        console.log('✅ Musik berhasil diputar.');
-      })
-      .catch((error) => {
-        console.error('❌ Musik gagal diputar:', error);
-        console.error('Source:', bgMusic.currentSrc);
+          if (musicController) {
+            musicController.classList.add('playing');
+          }
 
-        alert(
-          'Musik gagal diputar. Cek apakah file nothing-gonna-change.mp3 ada di folder music.'
-        );
-      });
+          console.log('✅ Musik berhasil diputar.');
+        })
+        .catch((error) => {
+          console.warn('⚠️ Autoplay diblokir oleh browser HP atau file tidak ditemukan:', error);
+          isAudioPlaying = false;
+          if (musicController) {
+            musicController.classList.remove('playing');
+          }
+        });
+    }
   }
 
   function pauseAudio() {
@@ -121,7 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const coverScreen = document.getElementById('cover-screen');
 
   if (btnOpenInvitation) {
-    btnOpenInvitation.addEventListener('click', () => {
+    // Gunakan click & touchend agar responsif di HP
+    const handleOpenInvitation = (e) => {
+      e.preventDefault();
+
       coverScreen.classList.add('hide-cover');
       document.body.classList.remove('cover-locked');
 
@@ -129,10 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
         musicController.classList.remove('hidden');
       }
 
+      // Pemanggilan playAudio() persis di dalam event klik tombol
       playAudio();
 
       setTimeout(initScrollReveal, 300);
-    });
+    };
+
+    btnOpenInvitation.addEventListener('click', handleOpenInvitation);
   }
 
   // ==========================================================================
