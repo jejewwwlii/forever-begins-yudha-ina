@@ -240,51 +240,463 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // 6. UCAPAN & DOA (RSVP & WISHES FEED WITH NO DUMMY DATA)
+  // 6. UCAPAN & DOA
   // ==========================================================================
 
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwV0Vy6rsKuvrkdYuL0HuATc1UIPcazR07JjUgtR1P5VJKw67r3o5JW06zYpfJAie8A9Q/exec";
+  const SCRIPT_URL =
+    "PASTE_URL_APPS_SCRIPT_KAMU_DI_SINI";
+
+  const rsvpForm =
+    document.getElementById("rsvp-form");
+
+  const rsvpName =
+    document.getElementById("rsvp-name");
+
+  const rsvpMessage =
+    document.getElementById("rsvp-message");
+
+  const wishesList =
+    document.getElementById("wishes-list");
+
+  function escapeHTML(text) {
+    const div =
+      document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatWishDate(timestamp) {
+    if (!timestamp) {
+      return "";
+    }
+    const date =
+      new Date(timestamp);
+    if (isNaN(date.getTime())) {
+      return "";
+    }
+    return date.toLocaleDateString(
+      "id-ID",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+  }
+
+  function createWishCard(wish) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "wish-item";
+
+
+    const name =
+      escapeHTML(
+        wish.name || "Tamu Undangan"
+      );
+
+
+    const message =
+      escapeHTML(
+        wish.message || ""
+      );
+
+
+    const date =
+      formatWishDate(
+        wish.timestamp
+      );
+
+
+    card.innerHTML = `
+
+      <div class="wish-content">
+
+        <div class="wish-header">
+
+          <div class="wish-avatar">
+            <i class="fa-regular fa-user"></i>
+          </div>
+
+          <div class="wish-author">
+
+            <div class="wish-name">
+              ${name}
+            </div>
+
+            ${
+              date
+                ? `<div class="wish-date">${date}</div>`
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="wish-message">
+          ${message}
+        </div>
+
+      </div>
+
+    `;
+
+
+    return card;
+
+  }
+
+  function renderWishes(data) {
+
+    if (!wishesList) {
+      return;
+    }
+
+
+    wishesList.innerHTML = "";
+
+
+    // Tidak ada ucapan
+    if (!data || data.length === 0) {
+
+      wishesList.innerHTML = `
+
+        <div class="wish-empty">
+
+          <i class="fa-regular fa-heart"></i>
+
+          <p>
+            Belum ada ucapan.
+          </p>
+
+          <span>
+            Jadilah yang pertama memberikan doa restu.
+          </span>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    // Tampilkan dari yang terbaru
+    const wishes =
+      [...data].reverse();
+
+
+    wishes.forEach(function(wish) {
+
+      const card =
+        createWishCard(wish);
+
+      wishesList.appendChild(card);
+
+    });
+
+  }
+
+  async function loadWishes() {
+
+    if (!wishesList) {
+      return;
+    }
+
+
+    try {
+
+      // Loading
+      wishesList.innerHTML = `
+
+        <div class="wish-loading">
+
+          <i class="fa-solid fa-spinner fa-spin"></i>
+
+          <span>
+            Memuat doa restu...
+          </span>
+
+        </div>
+
+      `;
+
+
+      const response =
+        await fetch(
+          SCRIPT_URL,
+          {
+            method: "GET",
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Gagal mengambil data."
+        );
+
+      }
+
+
+      const result =
+        await response.json();
+
+
+      if (
+        result.result !== "success"
+      ) {
+
+        throw new Error(
+          result.message ||
+          "Gagal mengambil data."
+        );
+
+      }
+
+
+      renderWishes(
+        result.data || []
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Gagal memuat ucapan:",
+        error
+      );
+
+
+      wishesList.innerHTML = `
+
+        <div class="wish-empty">
+
+          <i class="fa-regular fa-circle-exclamation"></i>
+
+          <p>
+            Ucapan belum dapat dimuat.
+          </p>
+
+          <span>
+            Silakan coba refresh halaman.
+          </span>
+
+        </div>
+
+      `;
+
+    }
+
+  }
 
   if (rsvpForm) {
-    rsvpForm.addEventListener('submit', async (e) => {
-      // Mencegah halaman refresh / kembali ke cover screen
-      e.preventDefault();
-      e.stopPropagation();
 
-      const nameEl = document.getElementById('rsvp-name');
-      const messageEl = document.getElementById('rsvp-message');
+    rsvpForm.addEventListener(
+      "submit",
+      async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-      const name = nameEl ? nameEl.value.trim() : '';
-      const message = messageEl ? messageEl.value.trim() : '';
+        const name =
+          rsvpName
+            ? rsvpName.value.trim()
+            : "";
 
-      if (!name || !message) return;
+        const message =
+          rsvpMessage
+            ? rsvpMessage.value.trim()
+            : "";
 
-      // Kirim via URLSearchParams agar aman dari batasan CORS Google Apps Script
-      const formData = new URLSearchParams();
-      formData.append('name', name);
-      formData.append('message', message);
+        if (!name) {
 
-      try {
-        showToast('Sending message...');
+          showToast(
+            "Silakan isi nama terlebih dahulu."
+          );
 
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formData.toString()
-        });
+          if (rsvpName) {
+            rsvpName.focus();
+          }
 
-        rsvpForm.reset();
-        showToast('Ucapan & Doa Restu Berhasil Dikirim!');
-      } catch (error) {
-        console.error("Gagal mengirim ucapan:", error);
-        showToast('Gagal mengirim ucapan. Coba lagi.');
+          return;
+
+        }
+
+
+        if (!message) {
+
+          showToast(
+            "Silakan tuliskan ucapan & doa restu."
+          );
+
+          if (rsvpMessage) {
+            rsvpMessage.focus();
+          }
+
+          return;
+
+        }
+
+        const submitButton =
+          rsvpForm.querySelector(
+            ".btn-submit"
+          );
+
+        const originalButtonHTML =
+          submitButton
+            ? submitButton.innerHTML
+            : "";
+
+        try {
+
+          // Disable tombol
+          if (submitButton) {
+
+            submitButton.disabled = true;
+
+            submitButton.innerHTML = `
+              <i class="fa-solid fa-spinner fa-spin"></i>
+              Mengirim...
+            `;
+
+          }
+
+          showToast(
+            "Mengirim ucapan..."
+          );
+
+          const formData =
+            new URLSearchParams();
+
+
+          formData.append(
+            "name",
+            name
+          );
+
+
+          formData.append(
+            "message",
+            message
+          );
+
+          await fetch(
+            SCRIPT_URL,
+            {
+              method: "POST",
+
+              mode: "no-cors",
+
+              headers: {
+                "Content-Type":
+                  "application/x-www-form-urlencoded"
+              },
+
+              body:
+                formData.toString()
+            }
+          );
+
+          rsvpForm.reset();
+
+          const newWish = {
+
+            name: name,
+
+            message: message,
+
+            timestamp:
+              new Date().toISOString()
+
+          };
+
+          // Ambil data yang sekarang ada di layar
+          const existingCards =
+            wishesList
+              ? wishesList.querySelectorAll(
+                  ".wish-item"
+                )
+              : [];
+
+          // Kalau sebelumnya kosong
+          const emptyMessage =
+            wishesList
+              ? wishesList.querySelector(
+                  ".wish-empty"
+                )
+              : null;
+
+
+          if (emptyMessage && wishesList) {
+
+            wishesList.innerHTML = "";
+
+          }
+
+          // Buat card
+          if (wishesList) {
+
+            const newCard =
+              createWishCard(
+                newWish
+              );
+
+
+            // Masukkan paling atas
+            wishesList.prepend(
+              newCard
+            );
+
+          }
+
+          showToast(
+            "Ucapan & Doa Restu berhasil dikirim ❤️"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Gagal mengirim ucapan:",
+            error
+          );
+
+
+          showToast(
+            "Gagal mengirim ucapan. Silakan coba lagi."
+          );
+
+
+        } finally {
+
+          if (submitButton) {
+
+            submitButton.disabled =
+              false;
+
+            submitButton.innerHTML =
+              originalButtonHTML;
+
+          }
+
+        }
+
       }
-    });
+    );
+
   }
-  
+
+  loadWishes();
+
   // ==========================================================================
   // 7. COPY ACCOUNT NUMBER & TOAST FEEDBACK
   // ==========================================================================
