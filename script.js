@@ -3,312 +3,911 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // 1. DYNAMIC URL PARAMETER PARSING (?to=GuestName)
   // ==========================================================================
-  
+
   function initGuestRecipient() {
     const urlParams = new URLSearchParams(window.location.search);
-    const rawGuest = urlParams.get('to') || urlParams.get('to_name') || urlParams.get('n');
-    
-    const guestNameEl = document.getElementById('guest-name');
-    const rsvpNameEl = document.getElementById('rsvp-name');
-    
+
+    const rawGuest =
+      urlParams.get('to') ||
+      urlParams.get('to_name') ||
+      urlParams.get('n');
+
+    const guestNameEl =
+      document.getElementById('guest-name');
+
+    const rsvpNameEl =
+      document.getElementById('rsvp-name');
+
     if (rawGuest && rawGuest.trim() !== '') {
-      const sanitizedGuest = escapeHTML(rawGuest.trim());
-      if (guestNameEl) guestNameEl.textContent = sanitizedGuest;
-      if (rsvpNameEl) rsvpNameEl.value = sanitizedGuest;
+
+      const sanitizedGuest =
+        escapeHTML(rawGuest.trim());
+
+      if (guestNameEl) {
+        guestNameEl.textContent =
+          sanitizedGuest;
+      }
+
+      if (rsvpNameEl) {
+        rsvpNameEl.value =
+          sanitizedGuest;
+      }
+
     } else {
-      if (guestNameEl) guestNameEl.textContent = 'Tamu Undangan';
+
+      if (guestNameEl) {
+        guestNameEl.textContent =
+          'Tamu Undangan';
+      }
+
     }
   }
 
+
+  // ==========================================================================
+  // SECURITY - ESCAPE HTML
+  // ==========================================================================
+
   function escapeHTML(str) {
-    const p = document.createElement('p');
-    p.textContent = str;
+
+    const p =
+      document.createElement('p');
+
+    p.textContent =
+      str == null ? '' : String(str);
+
     return p.innerHTML;
   }
 
-  document.body.classList.add('cover-locked');
+
+  // ==========================================================================
+  // INITIAL BODY STATE
+  // ==========================================================================
+
+  document.body.classList.add(
+    'cover-locked'
+  );
+
   initGuestRecipient();
+
 
   // ==========================================================================
   // 1B. AMBIENT BOTANICAL PARTICLES
   // ==========================================================================
-  function initBotanicalParticles() {
-    const layer = document.getElementById('botanical-particles');
-    if (!layer || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const total = window.innerWidth < 600 ? 10 : 18;
-    for (let i = 0; i < total; i += 1) {
-      const petal = document.createElement('span');
-      petal.className = 'botanical-petal';
-      petal.style.left = `${Math.random() * 100}%`;
-      petal.style.top = `${-10 - Math.random() * 30}%`;
-      petal.style.setProperty('--drift-x', `${(Math.random() - 0.5) * 180}px`);
-      petal.style.setProperty('--spin', `${120 + Math.random() * 320}deg`);
-      petal.style.animationDuration = `${10 + Math.random() * 13}s`;
-      petal.style.animationDelay = `${Math.random() * 10}s`;
-      petal.style.transform = `scale(${0.55 + Math.random() * 0.65}) rotate(${Math.random() * 90}deg)`;
+  function initBotanicalParticles() {
+
+    const layer =
+      document.getElementById(
+        'botanical-particles'
+      );
+
+    if (
+      !layer ||
+      window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
+    ) {
+      return;
+    }
+
+
+    const total =
+      window.innerWidth < 600
+        ? 10
+        : 18;
+
+
+    for (
+      let i = 0;
+      i < total;
+      i += 1
+    ) {
+
+      const petal =
+        document.createElement('span');
+
+      petal.className =
+        'botanical-petal';
+
+      petal.style.left =
+        `${Math.random() * 100}%`;
+
+      petal.style.top =
+        `${-10 - Math.random() * 30}%`;
+
+      petal.style.setProperty(
+        '--drift-x',
+        `${(Math.random() - 0.5) * 180}px`
+      );
+
+      petal.style.setProperty(
+        '--spin',
+        `${120 + Math.random() * 320}deg`
+      );
+
+      petal.style.animationDuration =
+        `${10 + Math.random() * 13}s`;
+
+      petal.style.animationDelay =
+        `${Math.random() * 10}s`;
+
+      petal.style.transform =
+        `scale(${0.55 + Math.random() * 0.65}) rotate(${Math.random() * 90}deg)`;
+
+
       layer.appendChild(petal);
     }
   }
 
+
   initBotanicalParticles();
 
-    // ==========================================================================
-  // 2. AUDIO & SYNTHESIZER SOUND SYSTEM ("CAN'T HELP FALLING IN LOVE")
+
+  // ==========================================================================
+  // 2. AUDIO & SYNTHESIZER SOUND SYSTEM
+  // ("CAN'T HELP FALLING IN LOVE")
   // ==========================================================================
 
-  const bgMusic = document.getElementById('bg-music');
-  const musicController = document.getElementById('music-controller');
+  const bgMusic =
+    document.getElementById(
+      'bg-music'
+    );
 
-  let isAudioPlaying = false;
+  const musicController =
+    document.getElementById(
+      'music-controller'
+    );
+
+
+  let isAudioPlaying =
+    false;
+
 
   function playAudio() {
+
     if (!bgMusic) {
-      console.error('Element #bg-music tidak ditemukan.');
+
+      console.error(
+        'Element #bg-music tidak ditemukan.'
+      );
+
       return;
     }
 
-    bgMusic.volume = 0.55;
 
-    // Pastikan audio di-unlock untuk browser mobile (iOS / Android)
-    const playPromise = bgMusic.play();
+    bgMusic.volume =
+      0.55;
 
-    if (playPromise !== undefined) {
+
+    // Pastikan audio di-unlock
+    // untuk browser mobile.
+
+    const playPromise =
+      bgMusic.play();
+
+
+    if (
+      playPromise !== undefined
+    ) {
+
       playPromise
         .then(() => {
-          isAudioPlaying = true;
+
+          isAudioPlaying =
+            true;
+
 
           if (musicController) {
-            musicController.classList.add('playing');
+
+            musicController.classList.add(
+              'playing'
+            );
+
           }
 
-          console.log('✅ Musik berhasil diputar.');
+
+          console.log(
+            '✅ Musik berhasil diputar.'
+          );
+
         })
         .catch((error) => {
-          console.warn('⚠️ Autoplay diblokir oleh browser HP atau file tidak ditemukan:', error);
-          isAudioPlaying = false;
+
+          console.warn(
+            '⚠️ Autoplay diblokir oleh browser HP atau file tidak ditemukan:',
+            error
+          );
+
+
+          isAudioPlaying =
+            false;
+
+
           if (musicController) {
-            musicController.classList.remove('playing');
+
+            musicController.classList.remove(
+              'playing'
+            );
+
           }
+
         });
+
     }
   }
+
 
   function pauseAudio() {
-    if (!bgMusic) return;
+
+    if (!bgMusic) {
+      return;
+    }
+
 
     bgMusic.pause();
-    isAudioPlaying = false;
+
+
+    isAudioPlaying =
+      false;
+
 
     if (musicController) {
-      musicController.classList.remove('playing');
+
+      musicController.classList.remove(
+        'playing'
+      );
+
     }
   }
+
 
   function toggleAudio() {
+
     if (isAudioPlaying) {
+
       pauseAudio();
+
     } else {
+
       playAudio();
+
     }
   }
 
+
   if (musicController) {
-    musicController.addEventListener('click', toggleAudio);
+
+    musicController.addEventListener(
+      'click',
+      toggleAudio
+    );
+
   }
+
 
   // ==========================================================================
   // 3. COVER SCREEN UNLOCK BUTTON
   // ==========================================================================
 
-  const btnOpenInvitation = document.getElementById('btn-open-invitation');
-  const coverScreen = document.getElementById('cover-screen');
+  const btnOpenInvitation =
+    document.getElementById(
+      'btn-open-invitation'
+    );
+
+  const coverScreen =
+    document.getElementById(
+      'cover-screen'
+    );
+
 
   if (btnOpenInvitation) {
-    // Gunakan click & touchend agar responsif di HP
-    const handleOpenInvitation = (e) => {
-      e.preventDefault();
 
-      coverScreen.classList.add('hide-cover');
-      document.body.classList.remove('cover-locked');
+    const handleOpenInvitation =
+      (e) => {
 
-      if (musicController) {
-        musicController.classList.remove('hidden');
-      }
+        e.preventDefault();
 
-      // Pemanggilan playAudio() persis di dalam event klik tombol
-      playAudio();
 
-      setTimeout(initScrollReveal, 300);
-    };
+        if (coverScreen) {
 
-    btnOpenInvitation.addEventListener('click', handleOpenInvitation);
+          coverScreen.classList.add(
+            'hide-cover'
+          );
+
+        }
+
+
+        document.body.classList.remove(
+          'cover-locked'
+        );
+
+
+        if (musicController) {
+
+          musicController.classList.remove(
+            'hidden'
+          );
+
+        }
+
+
+        // Musik dipanggil langsung
+        // dari event klik.
+
+        playAudio();
+
+
+        setTimeout(
+          initScrollReveal,
+          300
+        );
+
+      };
+
+
+    btnOpenInvitation.addEventListener(
+      'click',
+      handleOpenInvitation
+    );
+
   }
 
+
   // ==========================================================================
-  // 4. LIVE COUNTDOWN TIMER (3 SEPTEMBER 2026 16:00 WITA)
+  // 4. LIVE COUNTDOWN TIMER
+  // 3 SEPTEMBER 2026 16:00 WITA
   // ==========================================================================
 
   function initCountdown() {
-    // Wedding Date: 3 September 2026 16:00:00 WITA (+08:00)
-    const targetDate = new Date('2026-09-03T16:00:00+08:00').getTime();
 
-    const daysEl = document.getElementById('cd-days');
-    const hoursEl = document.getElementById('cd-hours');
-    const minutesEl = document.getElementById('cd-minutes');
-    const secondsEl = document.getElementById('cd-seconds');
+    const targetDate =
+      new Date(
+        '2026-09-03T16:00:00+08:00'
+      ).getTime();
+
+
+    const daysEl =
+      document.getElementById(
+        'cd-days'
+      );
+
+    const hoursEl =
+      document.getElementById(
+        'cd-hours'
+      );
+
+    const minutesEl =
+      document.getElementById(
+        'cd-minutes'
+      );
+
+    const secondsEl =
+      document.getElementById(
+        'cd-seconds'
+      );
+
 
     function updateTimer() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+
+      const now =
+        new Date().getTime();
+
+
+      const distance =
+        targetDate - now;
+
 
       if (distance < 0) {
-        if (daysEl) daysEl.textContent = '00';
-        if (hoursEl) hoursEl.textContent = '00';
-        if (minutesEl) minutesEl.textContent = '00';
-        if (secondsEl) secondsEl.textContent = '00';
+
+        if (daysEl) {
+          daysEl.textContent =
+            '00';
+        }
+
+        if (hoursEl) {
+          hoursEl.textContent =
+            '00';
+        }
+
+        if (minutesEl) {
+          minutesEl.textContent =
+            '00';
+        }
+
+        if (secondsEl) {
+          secondsEl.textContent =
+            '00';
+        }
+
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
-      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-      if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
-      if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+      const days =
+        Math.floor(
+          distance /
+          (1000 * 60 * 60 * 24)
+        );
+
+
+      const hours =
+        Math.floor(
+          (
+            distance %
+            (1000 * 60 * 60 * 24)
+          ) /
+          (1000 * 60 * 60)
+        );
+
+
+      const minutes =
+        Math.floor(
+          (
+            distance %
+            (1000 * 60 * 60)
+          ) /
+          (1000 * 60)
+        );
+
+
+      const seconds =
+        Math.floor(
+          (
+            distance %
+            (1000 * 60)
+          ) /
+          1000
+        );
+
+
+      if (daysEl) {
+
+        daysEl.textContent =
+          String(days).padStart(
+            2,
+            '0'
+          );
+
+      }
+
+
+      if (hoursEl) {
+
+        hoursEl.textContent =
+          String(hours).padStart(
+            2,
+            '0'
+          );
+
+      }
+
+
+      if (minutesEl) {
+
+        minutesEl.textContent =
+          String(minutes).padStart(
+            2,
+            '0'
+          );
+
+      }
+
+
+      if (secondsEl) {
+
+        secondsEl.textContent =
+          String(seconds).padStart(
+            2,
+            '0'
+          );
+
+      }
+
     }
 
+
     updateTimer();
-    setInterval(updateTimer, 1000);
+
+
+    setInterval(
+      updateTimer,
+      1000
+    );
+
   }
+
 
   initCountdown();
 
+
   // ==========================================================================
-  // 5. LIGHTBOX MODAL (PHOTO GALLERY & QRIS)
+  // 5. LIGHTBOX MODAL
+  // PHOTO GALLERY & QRIS
   // ==========================================================================
 
-  const lightboxModal = document.getElementById('lightbox-modal');
-  const lightboxWrapper = document.getElementById('lightbox-wrapper');
-  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxModal =
+    document.getElementById(
+      'lightbox-modal'
+    );
 
-  function openLightbox(elementContent) {
-    if (!lightboxModal || !lightboxWrapper) return;
-    lightboxWrapper.innerHTML = '';
-    lightboxWrapper.appendChild(elementContent);
-    lightboxModal.classList.add('active');
+  const lightboxWrapper =
+    document.getElementById(
+      'lightbox-wrapper'
+    );
+
+  const lightboxClose =
+    document.getElementById(
+      'lightbox-close'
+    );
+
+
+  function openLightbox(
+    elementContent
+  ) {
+
+    if (
+      !lightboxModal ||
+      !lightboxWrapper
+    ) {
+      return;
+    }
+
+
+    lightboxWrapper.innerHTML =
+      '';
+
+
+    lightboxWrapper.appendChild(
+      elementContent
+    );
+
+
+    lightboxModal.classList.add(
+      'active'
+    );
   }
+
 
   function closeLightbox() {
-    if (lightboxModal) lightboxModal.classList.remove('active');
+
+    if (lightboxModal) {
+
+      lightboxModal.classList.remove(
+        'active'
+      );
+
+    }
   }
 
+
+  // --------------------------------------------------------------------------
   // Gallery items trigger
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  galleryItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const src = item.getAttribute('data-src');
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = 'Galeri Foto Prewedding Yudha & Ina';
-      openLightbox(img);
-    });
-  });
+  // --------------------------------------------------------------------------
 
+  const galleryItems =
+    document.querySelectorAll(
+      '.gallery-item'
+    );
+
+
+  galleryItems.forEach(
+    item => {
+
+      item.addEventListener(
+        'click',
+        () => {
+
+          const src =
+            item.getAttribute(
+              'data-src'
+            );
+
+
+          if (!src) {
+            return;
+          }
+
+
+          const img =
+            document.createElement(
+              'img'
+            );
+
+
+          img.src =
+            src;
+
+
+          img.alt =
+            'Galeri Foto Prewedding Yudha & Ina';
+
+
+          openLightbox(
+            img
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  // --------------------------------------------------------------------------
   // QRIS trigger
-  const qrisTrigger = document.getElementById('qris-trigger');
+  // --------------------------------------------------------------------------
+
+  const qrisTrigger =
+    document.getElementById(
+      'qris-trigger'
+    );
+
+
   if (qrisTrigger) {
-    qrisTrigger.addEventListener('click', () => {
-      const qrisSvg = qrisTrigger.querySelector('svg').cloneNode(true);
-      qrisSvg.style.maxWidth = '320px';
-      qrisSvg.style.width = '100%';
-      openLightbox(qrisSvg);
-    });
-  }
 
-  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-  if (lightboxModal) {
-    lightboxModal.addEventListener('click', (e) => {
-      if (e.target === lightboxModal) closeLightbox();
-    });
-  }
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
+    qrisTrigger.addEventListener(
+      'click',
+      () => {
 
-  // ==========================================================================
-  // 6. UCAPAN & DOA
-  // ==========================================================================
+        const svg =
+          qrisTrigger.querySelector(
+            'svg'
+          );
 
-  const SCRIPT_URL =
-    "PASTE_URL_APPS_SCRIPT_KAMU_DI_SINI";
 
-  const rsvpForm =
-    document.getElementById("rsvp-form");
+        if (!svg) {
+          return;
+        }
 
-  const rsvpName =
-    document.getElementById("rsvp-name");
 
-  const rsvpMessage =
-    document.getElementById("rsvp-message");
+        const qrisSvg =
+          svg.cloneNode(true);
 
-  const wishesList =
-    document.getElementById("wishes-list");
 
-  function escapeHTML(text) {
-    const div =
-      document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
-  }
+        qrisSvg.style.maxWidth =
+          '320px';
 
-  function formatWishDate(timestamp) {
-    if (!timestamp) {
-      return "";
-    }
-    const date =
-      new Date(timestamp);
-    if (isNaN(date.getTime())) {
-      return "";
-    }
-    return date.toLocaleDateString(
-      "id-ID",
-      {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
+
+        qrisSvg.style.width =
+          '100%';
+
+
+        openLightbox(
+          qrisSvg
+        );
+
       }
     );
 
   }
 
-  function createWishCard(wish) {
 
-    const card =
-      document.createElement("div");
+  if (lightboxClose) {
 
-    card.className =
-      "wish-item";
+    lightboxClose.addEventListener(
+      'click',
+      closeLightbox
+    );
+
+  }
 
 
-    const name =
-      escapeHTML(
-        wish.name || "Tamu Undangan"
+  if (lightboxModal) {
+
+    lightboxModal.addEventListener(
+      'click',
+      (e) => {
+
+        if (
+          e.target ===
+          lightboxModal
+        ) {
+
+          closeLightbox();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  document.addEventListener(
+    'keydown',
+    (e) => {
+
+      if (
+        e.key === 'Escape'
+      ) {
+
+        closeLightbox();
+
+      }
+
+    }
+  );
+
+
+  // ==========================================================================
+  // 6. UCAPAN & DOA RESTU
+  // SUPABASE DATABASE
+  // ==========================================================================
+
+  /*
+    ========================================================================
+    SUPABASE CONFIGURATION
+    ========================================================================
+
+    GANTI 2 BARIS DI BAWAH INI.
+
+    SUPABASE_URL:
+    ambil dari project Supabase kamu.
+
+    Contoh:
+    https://xxxxxxxxxxxxxxxx.supabase.co
+
+    SUPABASE_KEY:
+    gunakan PUBLISHABLE KEY.
+
+    Contoh:
+    sb_publishable_xxxxxxxxxxxxxxxxx
+
+    JANGAN gunakan:
+    sb_secret_...
+
+    ========================================================================
+  */
+
+
+  const SUPABASE_URL =
+    "GANTI_DENGAN_PROJECT_URL_KAMU";
+
+
+  const SUPABASE_KEY =
+    "GANTI_DENGAN_PUBLISHABLE_KEY_KAMU";
+
+
+  // --------------------------------------------------------------------------
+  // CEK SUPABASE CLIENT
+  // --------------------------------------------------------------------------
+
+  let supabaseClient =
+    null;
+
+
+  if (
+    window.supabase &&
+    SUPABASE_URL !==
+      "GANTI_DENGAN_PROJECT_URL_KAMU" &&
+    SUPABASE_KEY !==
+      "GANTI_DENGAN_PUBLISHABLE_KEY_KAMU"
+  ) {
+
+    supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+  } else {
+
+    console.warn(
+      '⚠️ Supabase belum dikonfigurasi. Periksa SUPABASE_URL dan SUPABASE_KEY.'
+    );
+
+  }
+
+
+  // --------------------------------------------------------------------------
+  // ELEMENT FORM
+  // --------------------------------------------------------------------------
+
+  const rsvpForm =
+    document.getElementById(
+      'rsvp-form'
+    );
+
+
+  const rsvpName =
+    document.getElementById(
+      'rsvp-name'
+    );
+
+
+  const rsvpMessage =
+    document.getElementById(
+      'rsvp-message'
+    );
+
+
+  const wishesList =
+    document.getElementById(
+      'wishes-list'
+    );
+
+
+  // ==========================================================================
+  // FORMAT TANGGAL UCAPAN
+  // ==========================================================================
+
+  function formatWishDate(
+    timestamp
+  ) {
+
+    if (!timestamp) {
+      return '';
+    }
+
+
+    const date =
+      new Date(
+        timestamp
       );
 
 
-    const message =
+    if (
+      isNaN(
+        date.getTime()
+      )
+    ) {
+      return '';
+    }
+
+
+    return date.toLocaleDateString(
+      'id-ID',
+      {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }
+    );
+
+  }
+
+
+  // ==========================================================================
+  // CREATE WISH CARD
+  // ==========================================================================
+
+  function createWishCard(
+    wish
+  ) {
+
+    const card =
+      document.createElement(
+        'div'
+      );
+
+
+    /*
+      Class ini mengikuti struktur
+      desain Doa Restu yang sudah kamu punya.
+    */
+
+    card.className =
+      'wish-item';
+
+
+    const safeName =
       escapeHTML(
-        wish.message || ""
+        wish.name ||
+        'Tamu Undangan'
+      );
+
+
+    const safeMessage =
+      escapeHTML(
+        wish.message ||
+        ''
       );
 
 
     const date =
       formatWishDate(
-        wish.timestamp
+        wish.created_at
       );
 
 
@@ -319,19 +918,29 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="wish-header">
 
           <div class="wish-avatar">
+
             <i class="fa-regular fa-user"></i>
+
           </div>
+
 
           <div class="wish-author">
 
             <div class="wish-name">
-              ${name}
+
+              ${safeName}
+
             </div>
+
 
             ${
               date
-                ? `<div class="wish-date">${date}</div>`
-                : ""
+                ? `
+                  <div class="wish-date">
+                    ${date}
+                  </div>
+                `
+                : ''
             }
 
           </div>
@@ -340,7 +949,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         <div class="wish-message">
-          ${message}
+
+          ${safeMessage}
+
         </div>
 
       </div>
@@ -352,18 +963,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  function renderWishes(data) {
+
+  // ==========================================================================
+  // RENDER WISHES
+  // ==========================================================================
+
+  function renderWishes(
+    data
+  ) {
 
     if (!wishesList) {
       return;
     }
 
 
-    wishesList.innerHTML = "";
+    wishesList.innerHTML =
+      '';
 
 
+    // ------------------------------------------------------------------------
     // Tidak ada ucapan
-    if (!data || data.length === 0) {
+    // ------------------------------------------------------------------------
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
 
       wishesList.innerHTML = `
 
@@ -388,21 +1013,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Tampilkan dari yang terbaru
-    const wishes =
-      [...data].reverse();
+    // ------------------------------------------------------------------------
+    // Tampilkan data
+    // ------------------------------------------------------------------------
+
+    data.forEach(
+      wish => {
+
+        const card =
+          createWishCard(
+            wish
+          );
 
 
-    wishes.forEach(function(wish) {
+        wishesList.appendChild(
+          card
+        );
 
-      const card =
-        createWishCard(wish);
-
-      wishesList.appendChild(card);
-
-    });
+      }
+    );
 
   }
+
+
+  // ==========================================================================
+  // LOAD WISHES FROM SUPABASE
+  // ==========================================================================
 
   async function loadWishes() {
 
@@ -411,9 +1047,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // ------------------------------------------------------------------------
+    // Supabase belum dikonfigurasi
+    // ------------------------------------------------------------------------
+
+    if (!supabaseClient) {
+
+      wishesList.innerHTML = `
+
+        <div class="wish-empty">
+
+          <i class="fa-regular fa-circle-exclamation"></i>
+
+          <p>
+            Database belum terhubung.
+          </p>
+
+          <span>
+            Periksa konfigurasi Supabase.
+          </span>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
     try {
 
-      // Loading
       wishesList.innerHTML = `
 
         <div class="wish-loading">
@@ -429,50 +1093,43 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
 
-      const response =
-        await fetch(
-          SCRIPT_URL,
+      // ----------------------------------------------------------------------
+      // AMBIL DATA DARI TABLE wishes
+      // ----------------------------------------------------------------------
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+
+        .from('wishes')
+
+        .select(
+          'id, name, message, created_at'
+        )
+
+        .order(
+          'created_at',
           {
-            method: "GET",
-            cache: "no-store"
+            ascending: false
           }
         );
 
 
-      if (!response.ok) {
-
-        throw new Error(
-          "Gagal mengambil data."
-        );
-
-      }
-
-
-      const result =
-        await response.json();
-
-
-      if (
-        result.result !== "success"
-      ) {
-
-        throw new Error(
-          result.message ||
-          "Gagal mengambil data."
-        );
-
+      if (error) {
+        throw error;
       }
 
 
       renderWishes(
-        result.data || []
+        data || []
       );
 
 
     } catch (error) {
 
       console.error(
-        "Gagal memuat ucapan:",
+        '❌ Gagal memuat ucapan dari Supabase:',
         error
       );
 
@@ -499,189 +1156,307 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
+
+  // ==========================================================================
+  // SUBMIT FORM UCAPAN KE SUPABASE
+  // ==========================================================================
+
   if (rsvpForm) {
 
     rsvpForm.addEventListener(
-      "submit",
-      async function(e) {
+      'submit',
+      async (e) => {
+
+        // ====================================================================
+        // INI YANG MENCEGAH FORM KEMBALI KE COVER
+        // ====================================================================
+
         e.preventDefault();
         e.stopPropagation();
+
+
+        // --------------------------------------------------------------------
+        // Ambil input
+        // --------------------------------------------------------------------
 
         const name =
           rsvpName
             ? rsvpName.value.trim()
-            : "";
+            : '';
+
 
         const message =
           rsvpMessage
             ? rsvpMessage.value.trim()
-            : "";
+            : '';
+
+
+        // --------------------------------------------------------------------
+        // Validasi nama
+        // --------------------------------------------------------------------
 
         if (!name) {
 
           showToast(
-            "Silakan isi nama terlebih dahulu."
+            'Silakan isi nama terlebih dahulu.'
           );
+
 
           if (rsvpName) {
             rsvpName.focus();
           }
 
+
           return;
 
         }
 
 
+        // --------------------------------------------------------------------
+        // Validasi pesan
+        // --------------------------------------------------------------------
+
         if (!message) {
 
           showToast(
-            "Silakan tuliskan ucapan & doa restu."
+            'Silakan tuliskan ucapan & doa restu.'
           );
+
 
           if (rsvpMessage) {
             rsvpMessage.focus();
           }
 
+
           return;
 
         }
 
+
+        // --------------------------------------------------------------------
+        // Cek koneksi Supabase
+        // --------------------------------------------------------------------
+
+        if (!supabaseClient) {
+
+          console.error(
+            '❌ Supabase client belum tersedia.'
+          );
+
+
+          showToast(
+            'Database belum terhubung. Periksa konfigurasi Supabase.'
+          );
+
+
+          return;
+
+        }
+
+
+        // --------------------------------------------------------------------
+        // Tombol submit
+        // --------------------------------------------------------------------
+
         const submitButton =
           rsvpForm.querySelector(
-            ".btn-submit"
+            '.btn-submit'
           );
+
 
         const originalButtonHTML =
           submitButton
             ? submitButton.innerHTML
-            : "";
+            : '';
+
 
         try {
 
-          // Disable tombol
+          // ------------------------------------------------------------------
+          // Disable tombol sementara
+          // ------------------------------------------------------------------
+
           if (submitButton) {
 
-            submitButton.disabled = true;
+            submitButton.disabled =
+              true;
+
 
             submitButton.innerHTML = `
+
               <i class="fa-solid fa-spinner fa-spin"></i>
+
               Mengirim...
+
             `;
 
           }
 
+
           showToast(
-            "Mengirim ucapan..."
-          );
-
-          const formData =
-            new URLSearchParams();
-
-
-          formData.append(
-            "name",
-            name
+            'Mengirim ucapan...'
           );
 
 
-          formData.append(
-            "message",
-            message
-          );
+          // ==================================================================
+          // INSERT DATA KE SUPABASE
+          // ==================================================================
 
-          await fetch(
-            SCRIPT_URL,
-            {
-              method: "POST",
+          const {
+            data,
+            error
+          } = await supabaseClient
 
-              mode: "no-cors",
+            .from('wishes')
 
-              headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded"
-              },
+            .insert([
+              {
+                name: name,
+                message: message
+              }
+            ])
 
-              body:
-                formData.toString()
-            }
-          );
+            .select(
+              'id, name, message, created_at'
+            )
 
-          rsvpForm.reset();
-
-          const newWish = {
-
-            name: name,
-
-            message: message,
-
-            timestamp:
-              new Date().toISOString()
-
-          };
-
-          // Ambil data yang sekarang ada di layar
-          const existingCards =
-            wishesList
-              ? wishesList.querySelectorAll(
-                  ".wish-item"
-                )
-              : [];
-
-          // Kalau sebelumnya kosong
-          const emptyMessage =
-            wishesList
-              ? wishesList.querySelector(
-                  ".wish-empty"
-                )
-              : null;
+            .single();
 
 
-          if (emptyMessage && wishesList) {
+          // ------------------------------------------------------------------
+          // Kalau Supabase mengembalikan error
+          // ------------------------------------------------------------------
 
-            wishesList.innerHTML = "";
+          if (error) {
+
+            throw error;
 
           }
 
-          // Buat card
+
+          console.log(
+            '✅ Ucapan berhasil disimpan ke Supabase:',
+            data
+          );
+
+
+          // ------------------------------------------------------------------
+          // Kosongkan form
+          // ------------------------------------------------------------------
+
+          rsvpForm.reset();
+
+
+          // ------------------------------------------------------------------
+          // Kalau sebelumnya ada pesan "Belum ada ucapan"
+          // ------------------------------------------------------------------
+
           if (wishesList) {
 
-            const newCard =
-              createWishCard(
-                newWish
+            const emptyMessage =
+              wishesList.querySelector(
+                '.wish-empty'
               );
 
 
-            // Masukkan paling atas
+            if (emptyMessage) {
+
+              wishesList.innerHTML =
+                '';
+
+            }
+
+          }
+
+
+          // ------------------------------------------------------------------
+          // Tampilkan ucapan yang baru saja dikirim
+          // di paling atas.
+          // ------------------------------------------------------------------
+
+          if (
+            wishesList &&
+            data
+          ) {
+
+            const newCard =
+              createWishCard(
+                data
+              );
+
+
             wishesList.prepend(
               newCard
             );
 
           }
 
+
+          // ------------------------------------------------------------------
+          // SUCCESS
+          // ------------------------------------------------------------------
+
           showToast(
-            "Ucapan & Doa Restu berhasil dikirim ❤️"
+            'Ucapan & Doa Restu Berhasil Dikirim! ❤️'
           );
 
 
         } catch (error) {
 
+          // ==================================================================
+          // ERROR
+          // ==================================================================
+
           console.error(
-            "Gagal mengirim ucapan:",
+            '❌ Gagal mengirim ucapan ke Supabase:',
             error
           );
 
 
+          if (error) {
+
+            console.error(
+              'Supabase error message:',
+              error.message
+            );
+
+
+            console.error(
+              'Supabase error details:',
+              error.details
+            );
+
+
+            console.error(
+              'Supabase error hint:',
+              error.hint
+            );
+
+
+            console.error(
+              'Supabase error code:',
+              error.code
+            );
+
+          }
+
+
           showToast(
-            "Gagal mengirim ucapan. Silakan coba lagi."
+            'Gagal mengirim ucapan. Coba lagi.'
           );
 
 
         } finally {
 
+          // ------------------------------------------------------------------
+          // Aktifkan kembali tombol
+          // ------------------------------------------------------------------
+
           if (submitButton) {
 
             submitButton.disabled =
               false;
+
 
             submitButton.innerHTML =
               originalButtonHTML;
@@ -693,91 +1468,314 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     );
 
+  } else {
+
+    console.warn(
+      '⚠️ Form #rsvp-form tidak ditemukan.'
+    );
+
   }
 
+
+  // ==========================================================================
+  // LOAD UCAPAN SAAT WEBSITE DIBUKA
+  // ==========================================================================
+
   loadWishes();
+
 
   // ==========================================================================
   // 7. COPY ACCOUNT NUMBER & TOAST FEEDBACK
   // ==========================================================================
 
-  const toastEl = document.getElementById('toast');
-  const toastMsgEl = document.getElementById('toast-message');
-  let toastTimer = null;
+  const toastEl =
+    document.getElementById(
+      'toast'
+    );
 
-  function showToast(message) {
-    if (!toastEl) return;
-    if (toastMsgEl) toastMsgEl.textContent = message;
-    
-    toastEl.classList.remove('hidden');
-    
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toastEl.classList.add('hidden');
-    }, 3000);
+
+  const toastMsgEl =
+    document.getElementById(
+      'toast-message'
+    );
+
+
+  let toastTimer =
+    null;
+
+
+  function showToast(
+    message
+  ) {
+
+    if (!toastEl) {
+      return;
+    }
+
+
+    if (toastMsgEl) {
+
+      toastMsgEl.textContent =
+        message;
+
+    }
+
+
+    toastEl.classList.remove(
+      'hidden'
+    );
+
+
+    if (toastTimer) {
+
+      clearTimeout(
+        toastTimer
+      );
+
+    }
+
+
+    toastTimer =
+      setTimeout(
+        () => {
+
+          toastEl.classList.add(
+            'hidden'
+          );
+
+        },
+        3000
+      );
+
   }
 
-  const copyButtons = document.querySelectorAll('.btn-copy');
-  copyButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const textToCopy = btn.getAttribute('data-clipboard');
-      if (!textToCopy) return;
 
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-          showToast('Nomor Rekening Berhasil Disalin!');
-        }).catch(() => {
-          fallbackCopyText(textToCopy);
-        });
-      } else {
-        fallbackCopyText(textToCopy);
-      }
-    });
-  });
+  // ==========================================================================
+  // COPY REKENING
+  // ==========================================================================
 
-  function fallbackCopyText(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-9999px';
-    document.body.appendChild(textArea);
+  const copyButtons =
+    document.querySelectorAll(
+      '.btn-copy'
+    );
+
+
+  copyButtons.forEach(
+    btn => {
+
+      btn.addEventListener(
+        'click',
+        () => {
+
+          const textToCopy =
+            btn.getAttribute(
+              'data-clipboard'
+            );
+
+
+          if (!textToCopy) {
+            return;
+          }
+
+
+          if (
+            navigator.clipboard &&
+            window.isSecureContext
+          ) {
+
+            navigator.clipboard
+              .writeText(
+                textToCopy
+              )
+
+              .then(() => {
+
+                showToast(
+                  'Nomor Rekening Berhasil Disalin!'
+                );
+
+              })
+
+              .catch(() => {
+
+                fallbackCopyText(
+                  textToCopy
+                );
+
+              });
+
+          } else {
+
+            fallbackCopyText(
+              textToCopy
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  // ==========================================================================
+  // FALLBACK COPY TEXT
+  // ==========================================================================
+
+  function fallbackCopyText(
+    text
+  ) {
+
+    const textArea =
+      document.createElement(
+        'textarea'
+      );
+
+
+    textArea.value =
+      text;
+
+
+    textArea.style.position =
+      'fixed';
+
+
+    textArea.style.left =
+      '-9999px';
+
+
+    document.body.appendChild(
+      textArea
+    );
+
+
     textArea.focus();
+
+
     textArea.select();
 
+
     try {
-      document.execCommand('copy');
-      showToast('Nomor Rekening Berhasil Disalin!');
+
+      document.execCommand(
+        'copy'
+      );
+
+
+      showToast(
+        'Nomor Rekening Berhasil Disalin!'
+      );
+
+
     } catch (err) {
-      showToast('Gagal menyalin nomor rekening.');
+
+      console.error(
+        'Gagal menyalin:',
+        err
+      );
+
+
+      showToast(
+        'Gagal menyalin nomor rekening.'
+      );
+
     }
-    document.body.removeChild(textArea);
+
+
+    document.body.removeChild(
+      textArea
+    );
+
   }
+
 
   // ==========================================================================
   // 8. SCROLL REVEAL OBSERVER
   // ==========================================================================
 
   function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) {
-      revealElements.forEach(el => el.classList.add('active'));
+
+    const revealElements =
+      document.querySelectorAll(
+        '.reveal'
+      );
+
+
+    if (
+      !(
+        'IntersectionObserver'
+        in window
+      )
+    ) {
+
+      revealElements.forEach(
+        el => {
+
+          el.classList.add(
+            'active'
+          );
+
+        }
+      );
+
+
       return;
+
     }
 
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      root: null,
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    });
 
-    revealElements.forEach(el => revealObserver.observe(el));
+    const revealObserver =
+      new IntersectionObserver(
+        (
+          entries,
+          observer
+        ) => {
+
+          entries.forEach(
+            entry => {
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                entry.target.classList.add(
+                  'active'
+                );
+
+
+                observer.unobserve(
+                  entry.target
+                );
+
+              }
+
+            }
+          );
+
+        },
+        {
+          root: null,
+
+          threshold: 0.12,
+
+          rootMargin:
+            '0px 0px -40px 0px'
+        }
+      );
+
+
+    revealElements.forEach(
+      el => {
+
+        revealObserver.observe(
+          el
+        );
+
+      }
+    );
+
   }
+
 
 });
