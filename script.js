@@ -739,15 +739,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const SUPABASE_KEY =
     "sb_publishable_QbAqTbjpmUTCEoge5v5tEw_RMk92QBx";
 
-  let supabaseClient =
-    null;
+  let supabaseClient = null;
 
   if (
     window.supabase &&
-    SUPABASE_URL !==
-      "https://pnjwxobwxkuebwckhcmt.supabase.co" &&
-    SUPABASE_KEY !==
-      "sb_publishable_QbAqTbjpmUTCEoge5v5tEw_RMk92QBx"
+    SUPABASE_URL &&
+    SUPABASE_KEY
   ) {
 
     supabaseClient =
@@ -756,10 +753,14 @@ document.addEventListener('DOMContentLoaded', () => {
         SUPABASE_KEY
       );
 
+    console.log("✅ Supabase berhasil terhubung.");
+
   } else {
-    console.warn(
-      '⚠️ Supabase belum dikonfigurasi. Periksa SUPABASE_URL dan SUPABASE_KEY.'
+
+    console.error(
+      "❌ Supabase belum tersedia. Periksa CDN, URL, dan Publishable Key."
     );
+
   }
 
   const rsvpForm =
