@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Wedding of Yudha & Ina</title>
+  <meta name="description" content="Undangan Pernikahan Digital Yudha & Ina — botanical blue editorial wedding invitation.">
+  <meta name="theme-color" content="#0D1B2A">
+  <meta property="og:title" content="The Wedding of Yudha & Ina">
+  <meta property="og:description" content="Undangan Pernikahan Digital Yudha & Ina">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Great+Vibes&family=Alex+Brush&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <audio id="bg-music" loop preload="auto">
+    <source src="./music/nothing-gonna-change.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- COVER PAGE / SPLASH SCREEN -->
+  <div id="cover-screen" class="cover-screen">
+    <div class="cover-photo" aria-hidden="true">
+      <img src="foto/43.jpeg" alt="" class="cover-photo__image">
+    </div>
+    <div class="cover-gradient-overlay"></div>
+    <div class="cover-floral-border" aria-hidden="true">
+      <img src="assets/bordercover.png" alt="" class="cover-floral-border__image">
+    </div>
+
+    <div class="cover-content">
+      <div class="wedding-badge">The Wedding of</div>
+
+      <h1 class="cover-title">
+        <span>Yudha</span>
+        <span class="ampersand">&amp;</span>
+        <span>Ina</span>
+      </h1>
+
+      <div class="cover-divider" aria-hidden="true">
+        <span class="cover-divider__line"></span>
+        <span class="cover-divider__gem">◆</span>
+        <span class="cover-divider__line"></span>
+      </div>
+
+      <div class="cover-date-badge">
+        <i class="fa-regular fa-calendar-check"></i> Kamis, 3 September 2026
+      </div>
+
+      <button id="btn-open-invitation" class="btn-open-invitation">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <span>Buka Undangan</span>
+      </button>
+    </div>
+  </div>
+  <div id="botanical-particles" aria-hidden="true"></div>
+
+  <!-- FLOATING MUSIC CONTROLLER -->
+  <div id="music-controller" class="music-controller hidden" title="Play / Pause Musik (Can't Help Falling In Love)">
+    <div class="vinyl-disc" id="vinyl-disc">
+      <i class="fa-solid fa-music"></i>
+    </div>
+    <div class="music-waves" id="music-waves">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- MAIN MOBILE CONTAINER -->
+  <div class="desktop-wrapper">
+    <main id="app-container" class="app-container">
+
+      <!-- SECTION 1: HERO / HOME PAGE (PROFILE MEMPELAI) -->
+      <section id="home" class="section hero-section">
+        <div class="hero-header reveal">
+          <span class="sub-heading">The Wedding of</span>
+          <h2 class="section-title main-couple-title">Yudha & Ina</h2>
+          <div class="floral-title-divider">
+            <span class="line"></span>
+            <span class="cover-divider__gem">◆</span>
+            <span class="line"></span>
+          </div>
+          <p class="hero-date">3 . 09 . 2026</p>
+        </div>
+
+        <div class="greeting-box card reveal">
+          <p class="greeting-text" style="font-style: italic; margin-bottom: 0.8rem; color: var(--color-galaxy); font-weight: 600;">
+            “Cinta yang berujung pada pernikahan adalah anugerah dari Tuhan dan tindakan iman yang agung terhadap sesama manusia”<br>
+            <small style="font-style: normal; color: var(--color-planetary); font-size: 0.82rem;">(St. Yohanes Paulus II)</small>
+          </p>
+          <p class="greeting-text">
+            Pertemuan kami adalah rencana-Mu Tuhan, kami bisa melangkah dengan tumbuh bersama, itu karena pertolongan-Mu. Berkat anugerah-Mu, akhirnya kami tiba di lembar awal hidup yang baru dalam ikatan kasih abadi, dan akan memperoleh berkat dalam pernikahan kudus kami.
+          </p>
+        </div>
+
+        <!-- PROFILE MEMPELAI CARDS (CROPPED FROM GALERI/34.JPEG) -->
+        <div class="couple-profiles">
+          
+          <!-- GROOM CARD -->
+          <div class="profile-card card reveal">
+            <div class="avatar-frame">
+              <div class="avatar-crop-container">
+                <img src="galeri/52.jpeg" alt="Florianus Demon Yudhasaputra" class="avatar-img groom-crop" loading="lazy">
+              </div>
+              <div class="avatar-border-ring"></div>
+              <div class="avatar-flower-badge">
+                <img src="assets/bagdeflower.png" alt="" class="avatar-flower-badge__image">
+              </div>
+            </div>
+            <h3 class="person-name">Florianus Demon Yudhasaputra</h3>
+            <p class="child-order">Putra Sulung dari</p>
+            <p class="parents-name">Bapak Mathias Magi Amang & Ibu Skolastika Tuty Kusdarwati</p>
+          </div>
+
+          <div class="couple-divider">
+            <span class="divider-line"></span>
+            <span class="heart-icon"><i class="fa-solid fa-heart"></i></span>
+            <span class="divider-line"></span>
+          </div>
+
+          <!-- BRIDE CARD -->
+          <div class="profile-card card reveal">
+            <div class="avatar-frame">
+              <div class="avatar-crop-container">
+                <img src="galeri/52.jpeg" alt="Yohana Putri Naga" class="avatar-img bride-crop" loading="lazy">
+              </div>
+              <div class="avatar-border-ring"></div>
+              <div class="avatar-flower-badge">
+                <img src="assets/bagdeflower.png" alt="" class="avatar-flower-badge__image">
+              </div>
+            </div>
+            <h3 class="person-name">Yohana Putri Naga</h3>
+            <p class="child-order">Putri Kedua dari</p>
+            <p class="parents-name">Bapak Donatus Era & Ibu Oliva Maria Umi</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 2: PEMBERKATAN & RESEPSI NIKAH (EVENT DETAILS) -->
+      <section id="event" class="section event-section">
+        <div class="section-header reveal">
+          <span class="sub-heading">Momen Bahagia</span>
+          <h2 class="section-title">Acara Pernikahan</h2>
+          <div class="floral-title-divider">
+            <span class="line"></span>
+            <span class="cover-divider__gem">◆</span>
+            <span class="line"></span>
+          </div>
+        </div>
+
+        <!-- GREETING INTRO -->
+        <div class="greeting-card card reveal" style="text-align: center; background: #ffffff;">
+          <p style="font-size: 0.9rem; color: #475569; line-height: 1.6;">
+            Dalam ucapan syukur kepada Sang Pemilik Kehidupan dan Sumber Kasih Sayang, Kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri Perayaan Ekaristi Pemberkatan Nikah & Resepsi Pernikahan kami.
+          </p>
+        </div>
+
+        <!-- COUNTDOWN TIMER -->
+        <div class="countdown-card card reveal">
+          <h3 class="countdown-title"><i class="fa-regular fa-clock"></i> Menghitung Hari</h3>
+          <div id="countdown" class="countdown-timer">
+            <div class="timer-box">
+              <span id="cd-days">00</span>
+              <small>Hari</small>
+            </div>
+            <div class="timer-box">
+              <span id="cd-hours">00</span>
+              <small>Jam</small>
+            </div>
+            <div class="timer-box">
+              <span id="cd-minutes">00</span>
+              <small>Menit</small>
+            </div>
+            <div class="timer-box">
+              <span id="cd-seconds">00</span>
+              <small>Detik</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVENT DETAIL CARDS -->
+        <div class="event-cards">
+          
+          <!-- PEMBERKATAN NIKAH -->
+          <div class="event-card card reveal">
+            <div class="event-icon-badge">
+              <i class="fa-solid fa-church"></i>
+            </div>
+            <h3 class="event-type">Perayaan Ekaristi Pemberkatan Nikah</h3>
+            <div class="event-info">
+              <p class="event-date"><i class="fa-regular fa-calendar-check"></i> Kamis, 3 September 2026</p>
+              <p class="event-time"><i class="fa-regular fa-clock"></i> Pukul: 16.00 WITA</p>
+              <p class="event-venue"><i class="fa-solid fa-location-dot"></i> Gereja St. Yoseph Onekore, Ende</p>
+            </div>
+          </div>
+
+          <!-- RESEPSI -->
+          <div class="event-card card reveal">
+            <div class="event-icon-badge">
+              <i class="fa-solid fa-glass-cheers"></i>
+            </div>
+            <h3 class="event-type">Resepsi Pernikahan</h3>
+            <div class="event-info">
+              <p class="event-date"><i class="fa-regular fa-calendar-check"></i> Kamis, 3 September 2026</p>
+              <p class="event-time"><i class="fa-regular fa-clock"></i> Pukul: 19.00 WITA</p>
+              <p class="event-venue"><i class="fa-solid fa-building-columns"></i> Aula Marinus Kroll, Paroki St. Yoseph Onekore, Ende</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="event-actions reveal">
+          <a href="https://maps.app.goo.gl/GLk5PTSgqLNx4m9d9" target="_blank" rel="noopener noreferrer" class="btn-action btn-primary">
+            <i class="fa-solid fa-map-location-dot"></i> Google Maps Location
+          </a>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Yudha+%26+Ina&dates=20260903T073000Z/20260903T130000Z&details=Pernikahan+Yudha+%26+Ina&location=https://maps.app.goo.gl/GLk5PTSgqLNx4m9d9" target="_blank" rel="noopener noreferrer" class="btn-action btn-secondary">
+            <i class="fa-solid fa-calendar-plus"></i> Add to Google Calendar
+          </a>
+        </div>
+      </section>
+
+      <!-- SECTION 3: TURUT MENGUNDANG (HONORED GUESTS) -->
+      <section id="honored-guests" class="section honored-section">
+        <div class="section-header reveal">
+          <span class="sub-heading">Penghormatan</span>
+          <h2 class="section-title">Turut Mengundang</h2>
+          <div class="floral-title-divider">
+            <span class="line"></span>
+            <span class="cover-divider__gem">◆</span>
+            <span class="line"></span>
+          </div>
+        </div>
+
+        <div class="honored-card card reveal">
+          <p class="honored-intro" style="font-weight: 600; color: var(--color-galaxy);">Yang Mengundang:</p>
+          <p style="text-align: center; font-weight: 700; font-size: 1.1rem; color: var(--color-planetary); margin-bottom: 0.5rem;">Yudha & Ina</p>
+          <p style="text-align: center; font-size: 0.85rem; color: #475569; margin-bottom: 1.25rem;">
+            Bapak Mathias Magi Amang dan Ibu Skolastika Tuty Kusdarwati<br>
+            Bapak Donatus Era dan Ibu Oliva Maria Umi
+          </p>
+
+          <div class="honored-grid">
+            <div class="honored-group">
+              <h4>Keluarga Mempelai Pria</h4>
+              <ul>
+                <li>Bapak Martinus Sanga Nele</li>
+                <li>Bapak Robertus Edi Dharmoko</li>
+                <li>Bapak Stefanus Notan Tupen</li>
+                <li>Bapak Cosmas Din</li>
+                <li>Keluarga Besar Puhugelong – Gayak, Adonara</li>
+                <li>Keluarga Besar Muntilan, Jawa Tengah</li>
+                <li>Keluarga Besar UBSP Galekat Nara di Ende</li>
+                <li>Keluarga Besar Bagian PBJ, Setda Kab. Sikka</li>
+                <li>Keluarga Besar Jalan Baru Tengah</li>
+              </ul>
+            </div>
+
+            <div class="honored-group">
+              <h4>Keluarga Mempelai Wanita</h4>
+              <ul>
+                <li>Bapak Bernadus Naga (Alm)</li>
+                <li>Bapak Stefanus Lagu</li>
+                <li>Bapak Bernadus Watu</li>
+                <li>Bapak Lasarus Sapa</li>
+                <li>Bapak Petrus Ndoa</li>
+                <li>Bapak Mikhael Sega</li>
+                <li>Keluarga Besar Embu Jobhi – Nuaja, Ende</li>
+                <li>Keluarga Besar SMP Kristen Ende</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: GALERI FOTO (EXCLUSIVELY FROM GALERI FOLDER) -->
+      <section id="gallery" class="section gallery-section">
+        <div class="section-header reveal">
+          <span class="sub-heading">Kenangan Indah</span>
+          <h2 class="section-title">Galeri Foto</h2>
+          <div class="floral-title-divider">
+            <span class="line"></span>
+            <span class="cover-divider__gem">◆</span>
+            <span class="line"></span>
+          </div>
+        </div>
+
+        <div class="gallery-grid reveal">
+          <div class="gallery-item" data-src="galeri/54.png">
+            <img src="galeri/54.png" alt="Galeri Photo 54" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/34.jpeg">
+            <img src="galeri/34.jpeg" alt="Galeri Photo 34" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/2.jpeg">
+            <img src="galeri/2.jpeg" alt="Galeri Photo 2" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/7.jpeg">
+            <img src="galeri/7.jpeg" alt="Galeri Photo 7" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/16.jpeg">
+            <img src="galeri/16.jpeg" alt="Galeri Photo 16" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/20.jpeg">
+            <img src="galeri/20.jpeg" alt="Galeri Photo 20" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/26.jpeg">
+            <img src="galeri/26.jpeg" alt="Galeri Photo 26" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/43.jpeg">
+            <img src="galeri/43.jpeg" alt="Galeri Photo 43" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/50.jpeg">
+            <img src="galeri/50.jpeg" alt="Galeri Photo 50" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/52.jpeg">
+            <img src="galeri/52.jpeg" alt="Galeri Photo 52" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/1.jpeg">
+            <img src="galeri/1.jpeg" alt="Galeri Photo 1" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/31.jpeg">
+            <img src="galeri/31.jpeg" alt="Galeri Photo 31" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+          <div class="gallery-item" data-src="galeri/10.jpeg">
+            <img src="galeri/10.jpeg" alt="Galeri Photo 10" loading="lazy">
+            <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 5: UCAPAN & DOA (RSVP & ELEGANT WISHES FEED) -->
+      <section id="rsvp-wishes" class="section rsvp-section">
+        <div class="section-header reveal">
+          <span class="sub-heading">Konfirmasi & Harapan</span>
+          <h2 class="section-title">Ucapan & Doa Restu</h2>
+          <div class="floral-title-divider">
+            <span class="line"></span>
+            <span class="cover-divider__gem">◆</span>
+            <span class="line"></span>
+          </div>
+        </div>
+
+        <div class="rsvp-card card reveal">
+          <form id="rsvp-form" class="rsvp-form">
+            <div class="form-group">
+              <label for="rsvp-name"><i class="fa-regular fa-user"></i> Nama Lengkap</label>
+              <input type="text" id="rsvp-name" class="form-input" placeholder="Masukkan nama Anda" required>
+            </div>
+            <div class="form-group">
+              <label for="rsvp-message"><i class="fa-regular fa-comment-dots"></i> Ucapan & Doa Restu</label>
+              <textarea id="rsvp-message" class="form-textarea" rows="3" placeholder="Tuliskan ucapan & doa indah Anda untuk kedua mempelai..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <i class="fa-solid fa-paper-plane"></i> Kirim Ucapan & Doa Restu
+            </button>
+          </form>
+        </div>
+
+        <div class="wishes-container reveal">
+          <div class="wishes-header-bar">
+            <h3 class="wishes-feed-title">
+              <i class="fa-solid fa-heart-circle-check"></i> Doa Restu Tamu
+            </h3>
+            <span class="feed-live-badge"><span class="dot"></span> Live</span>
+          </div>
+
+          <div id="wishes-list" class="wishes-list">
+            <!-- Wishes appended dynamically via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: AMPLOP DIGITAL (DIGITAL GIFT) -->
+      <section id="digital-gift" class="section gift-section">
+        <div class="section-header reveal">
+          <span class="sub-heading">Tanda Kasih</span>
+          <h2 class="section-title">Amplop Digital</h2>
+          <div class="floral-title-divider">
+            <span class="line"></span>
+            <span class="cover-divider__gem">◆</span>
+            <span class="line"></span>
+          </div>
+        </div>
+
+        <div class="gift-intro-card card reveal">
+          <p>Doa restu Anda merupakan hadiah terindah bagi kami. Namun jika Anda ingin memberi hadiah secara cashless, Anda dapat menggunakan rekening di bawah ini:</p>
+        </div>
+
+        <div class="bank-cards">
+
+          <!-- BRI CARD -->
+          <div class="bank-card card reveal">
+            <div class="bank-header">
+              <span class="bank-name bca">BRI</span>
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+            <div class="bank-body">
+              <p class="account-number" id="acc-bri">715501010243531</p>
+              <p class="account-holder">a.n. Florianus Demon Yudhasaputra</p>
+            </div>
+            <button class="btn-copy" data-clipboard="715501010243531">
+              <i class="fa-regular fa-copy"></i> Copy Nomor Rekening
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 7: FOOTER / CLOSING -->
+      <footer class="app-footer section">
+        <div class="footer-card card reveal">
+          <p class="footer-thanks">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
+          <div class="footer-couple-names">Yudha & Ina</div>
+          <p class="footer-salutation">Kami Yang Berbahagia,</p>
+          <p class="footer-family">
+            Yudha & Ina<br>
+            Bapak Mathias Magi Amang dan Ibu Skolastika Tuty Kusdarwati<br>
+            Bapak Donatus Era dan Ibu Oliva Maria Umi
+          </p>
+        </div>
+        
+        <div class="copyright">
+          Made by Ajeng Murtiningrum for Yudha & Ina Wedding
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <div id="lightbox-modal" class="lightbox-modal">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Close Lightbox">&times;</button>
+    <div class="lightbox-content">
+      <div id="lightbox-wrapper"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden">
+    <i class="fa-solid fa-circle-check"></i> <span id="toast-message">Nomor Rekening Berhasil Disalin!</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
