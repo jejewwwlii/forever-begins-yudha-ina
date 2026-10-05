@@ -356,14 +356,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================================================
   // 4. LIVE COUNTDOWN TIMER
-  // 3 SEPTEMBER 2026 16:00 WITA
+  // 16 OKTOBER 2026 16:00 WITA
   // ==========================================================================
 
   function initCountdown() {
 
     const targetDate =
       new Date(
-        '2026-09-03T16:00:00+08:00'
+        '2026-10-16T16:00:00+08:00'
       ).getTime();
 
 
