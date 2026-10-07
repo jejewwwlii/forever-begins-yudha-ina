@@ -2350,8 +2350,8 @@ body {
 .invalid-link-content h1 {
   margin: 0 0 1rem;
   font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 7vw, 2.5rem);
-  font-weight: 100;
+  font-size: clamp(1rem, 7vw, 2.5rem);
+  font-weight: 500;
 }
 
 .invalid-link-content p {
