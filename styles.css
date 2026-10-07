@@ -2351,7 +2351,7 @@ body {
   margin: 0 0 1rem;
   font-family: var(--font-heading);
   font-size: clamp(1rem, 7vw, 2.5rem)!important;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .invalid-link-content p {
