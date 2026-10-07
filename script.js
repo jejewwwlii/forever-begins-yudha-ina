@@ -100,13 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnOpenInvitation) {
     const handleOpenInvitation = (e) => {
       e.preventDefault();
+
+      if (!invitationAccessGranted) {
+        console.warn('❌ Akses ditolak. Link undangan tidak valid.');
+        return;
+      }
+
       if (coverScreen) {
         coverScreen.classList.add('hide-cover');
       }
+
       document.body.classList.remove('cover-locked');
+
       if (musicController) {
         musicController.classList.remove('hidden');
       }
+
       playAudio();
       setTimeout(initScrollReveal, 300);
     };
@@ -229,37 +238,69 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentGuestName = '';
   let currentGuestSlug = '';
   let currentGuestLoaded = false;
+  let invitationAccessGranted = false;
+
+  function showInvalidLinkScreen() {
+    const invalidScreen = document.getElementById('invalid-link-screen');
+
+    if (invalidScreen) {
+      invalidScreen.style.display = 'flex';
+    }
+
+    document.body.classList.add('invalid-link-active');
+  }
+
+  function hideInvalidLinkScreen() {
+    const invalidScreen = document.getElementById('invalid-link-screen');
+
+    if (invalidScreen) {
+      invalidScreen.style.display = 'none';
+    }
+
+    document.body.classList.remove('invalid-link-active');
+  }
 
   const rsvpForm = document.getElementById('rsvp-form');
   const rsvpName = document.getElementById('rsvp-name');
   const rsvpMessage = document.getElementById('rsvp-message');
   const wishesList = document.getElementById('wishes-list');
 
-  // Load nama database
+  // Load nama database dan validasi akses undangan
   async function loadGuestFromSupabase() {
     const guestSlug = getGuestSlugFromURL();
     const guestNameEl = document.getElementById('guest-name');
 
+    invitationAccessGranted = false;
+
     if (!guestSlug) {
-      if (guestNameEl) guestNameEl.textContent = 'Tamu Undangan';
-      if (rsvpName) {
-        rsvpName.value = '';
-        rsvpName.readOnly = false;
-      }
-      console.warn('⚠️ Link tamu tidak memiliki ?to=slug yang valid.');
+      currentGuestName = '';
+      currentGuestSlug = '';
+      currentGuestLoaded = false;
+
+      showInvalidLinkScreen();
+
+      console.warn('❌ Link undangan tidak memiliki ?to=slug yang valid.');
       return;
     }
 
     if (!supabaseClient) {
+      currentGuestName = '';
+      currentGuestSlug = '';
+      currentGuestLoaded = false;
+
+      showInvalidLinkScreen();
+
       console.error('❌ Supabase client belum tersedia.');
-      if (guestNameEl) guestNameEl.textContent = 'Tamu Undangan';
       return;
     }
 
-    if (guestNameEl) guestNameEl.textContent = 'Memuat nama...';
+    if (guestNameEl) {
+      guestNameEl.textContent = 'Memuat nama...';
+    }
 
     try {
-      console.log('🔎 Mencari tamu dengan slug:', guestSlug);
+      console.log('🔎 Memeriksa akses dengan slug:', guestSlug);
+
       const { data, error } = await supabaseClient
         .from('guests')
         .select('name, slug')
@@ -270,26 +311,41 @@ document.addEventListener('DOMContentLoaded', () => {
         throw error;
       }
 
+      // SLUG TIDAK DITEMUKAN
       if (!data) {
         currentGuestName = '';
         currentGuestSlug = '';
         currentGuestLoaded = false;
-        if (guestNameEl) guestNameEl.textContent = 'Tamu Undangan';
-        if (rsvpName) {
-          rsvpName.value = '';
-          rsvpName.readOnly = false;
-        }
-        console.warn('⚠️ Tamu dengan slug tersebut tidak ditemukan:', guestSlug);
+        invitationAccessGranted = false;
+
+        console.warn('❌ Slug tidak ditemukan di database:', guestSlug);
+
+        showInvalidLinkScreen();
+
         return;
       }
 
-      currentGuestName = String(data.name || '').trim();
-      currentGuestSlug = String(data.slug || guestSlug).trim();
-      currentGuestLoaded = currentGuestName !== '';
+      // DATA DITEMUKAN, TAPI NAMA KOSONG
+      const guestName = String(data.name || '').trim();
 
-      if (!currentGuestLoaded) {
-        throw new Error('Data tamu ditemukan tetapi kolom name kosong.');
+      if (!guestName) {
+        currentGuestName = '';
+        currentGuestSlug = '';
+        currentGuestLoaded = false;
+        invitationAccessGranted = false;
+
+        console.warn('❌ Data tamu ditemukan tetapi nama kosong.');
+
+        showInvalidLinkScreen();
+
+        return;
       }
+
+      // DATA VALID
+      currentGuestName = guestName;
+      currentGuestSlug = String(data.slug || guestSlug).trim();
+      currentGuestLoaded = true;
+      invitationAccessGranted = true;
 
       if (guestNameEl) {
         guestNameEl.textContent = currentGuestName;
@@ -300,19 +356,21 @@ document.addEventListener('DOMContentLoaded', () => {
         rsvpName.readOnly = true;
       }
 
-      console.log('✅ Tamu ditemukan:', currentGuestName);
+      hideInvalidLinkScreen();
+
+      console.log('✅ Akses undangan diberikan.');
+      console.log('✅ Nama tamu:', currentGuestName);
+      console.log('✅ Slug:', currentGuestSlug);
+
     } catch (error) {
       currentGuestName = '';
       currentGuestSlug = '';
       currentGuestLoaded = false;
-      console.error('❌ Gagal mengambil data tamu dari Supabase:', error);
-      if (guestNameEl) {
-        guestNameEl.textContent = 'Tamu Undangan';
-      }
-      if (rsvpName) {
-        rsvpName.value = '';
-        rsvpName.readOnly = false;
-      }
+      invitationAccessGranted = false;
+
+      console.error('❌ Gagal memvalidasi tamu:', error);
+
+      showInvalidLinkScreen();
     }
   }
 

@@ -2316,3 +2316,56 @@ body {
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
+
+
+.invalid-link-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #0D1B2A;
+  text-align: center;
+}
+
+.invalid-link-content {
+  width: min(90%, 420px);
+  color: #ffffff;
+}
+
+.invalid-link-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  font-size: 1.6rem;
+}
+
+.invalid-link-content h1 {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 7vw, 2.5rem);
+  font-weight: 600;
+}
+
+.invalid-link-content p {
+  margin: 0 auto .75rem;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,.9);
+}
+
+.invalid-link-content span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .8rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,.65);
+}
