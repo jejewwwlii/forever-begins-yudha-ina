@@ -264,6 +264,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const rsvpName = document.getElementById('rsvp-name');
   const rsvpMessage = document.getElementById('rsvp-message');
   const wishesList = document.getElementById('wishes-list');
+  let allWishes = [];
+  let currentWishesPage = 1;
+  const WISHES_PER_PAGE = 3;
 
   // Load nama database dan validasi akses undangan
   async function loadGuestFromSupabase() {
@@ -438,27 +441,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // RENDER WISHES
   function renderWishes(data) {
-    if (!wishesList) {
-      return;
-    }
+    allWishes = data || [];
+    const totalPages = Math.max(1, Math.ceil(allWishes.length / WISHES_PER_PAGE));
+
+    currentWishesPage = Math.min(currentWishesPage, totalPages);
+    renderWishesPage();
+  }
+
+  function renderWishesPage() {
+    if (!wishesList) return;
+
+    const pagination = document.getElementById('wishes-pagination');
+    const prevButton = document.getElementById('wishes-prev');
+    const nextButton = document.getElementById('wishes-next');
+    const pageInfo = document.getElementById('wishes-page-info');
+
+    const totalPages = Math.max(1, Math.ceil(allWishes.length / WISHES_PER_PAGE));
+    const startIndex = (currentWishesPage - 1) * WISHES_PER_PAGE;
+    const pageWishes = allWishes.slice(startIndex, startIndex + WISHES_PER_PAGE);
+
     wishesList.innerHTML = '';
-    if (!data || data.length === 0) {
+
+    if (allWishes.length === 0) {
       wishesList.innerHTML = `
         <div class="wish-empty">
           <i class="fa-regular fa-heart"></i>
-          <p>
-            Belum ada ucapan.
-          </p>
-          <span>
-            Jadilah yang pertama memberikan doa restu.
-          </span>
+          <p>Belum ada ucapan.</p>
+          <span>Jadilah yang pertama memberikan doa restu.</span>
         </div>
       `;
-      return;
+    } else {
+      pageWishes.forEach(wish => {
+        wishesList.appendChild(createWishCard(wish));
+      });
     }
-    data.forEach(wish => {
-      const card = createWishCard(wish);
-      wishesList.appendChild(card);
+
+    if (pageInfo) {
+      pageInfo.textContent = `Halaman ${currentWishesPage} dari ${totalPages}`;
+    }
+
+    if (prevButton) {
+      prevButton.disabled = currentWishesPage <= 1;
+    }
+
+    if (nextButton) {
+      nextButton.disabled = currentWishesPage >= totalPages;
+    }
+
+    if (pagination) {
+      pagination.style.display = allWishes.length > WISHES_PER_PAGE ? 'flex' : 'none';
+    }
+  }
+
+  const prevWishesButton = document.getElementById('wishes-prev');
+  const nextWishesButton = document.getElementById('wishes-next');
+
+  if (prevWishesButton) {
+    prevWishesButton.addEventListener('click', () => {
+      if (currentWishesPage > 1) {
+        currentWishesPage--;
+        renderWishesPage();
+      }
+    });
+  }
+
+  if (nextWishesButton) {
+    nextWishesButton.addEventListener('click', () => {
+      const totalPages = Math.ceil(allWishes.length / WISHES_PER_PAGE);
+
+      if (currentWishesPage < totalPages) {
+        currentWishesPage++;
+        renderWishesPage();
+      }
     });
   }
 
@@ -589,9 +643,10 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        if (wishesList && data) {
-          const newCard = createWishCard(data);
-          wishesList.prepend(newCard);
+        if (data) {
+          allWishes.unshift(data);
+          currentWishesPage = 1;
+          renderWishesPage();
         }
 
         showToast('Ucapan & Doa Restu Berhasil Dikirim! ❤️');

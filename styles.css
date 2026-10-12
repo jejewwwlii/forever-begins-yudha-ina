@@ -2369,3 +2369,58 @@ body {
   line-height: 1.6;
   color: rgba(255,255,255,.65);
 }
+
+
+/* PAGINATION UCAPAN */
+.wishes-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 12px 0;
+  font-family: var(--font-body);
+}
+
+.wishes-pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #c8d9e9;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0d1b2a;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wishes-pagination button:hover:not(:disabled) {
+  background: #0d1b2a;
+  color: #ffffff;
+}
+
+.wishes-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#wishes-page-info {
+  color: #4b6b7c;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .wishes-pagination {
+    gap: 8px;
+  }
+
+  .wishes-pagination button {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+}
