@@ -459,6 +459,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalPages = Math.max(1, Math.ceil(allWishes.length / WISHES_PER_PAGE));
     const startIndex = (currentWishesPage - 1) * WISHES_PER_PAGE;
     const pageWishes = allWishes.slice(startIndex, startIndex + WISHES_PER_PAGE);
+    console.log('Batas per halaman:', WISHES_PER_PAGE);
+    console.log('Total data:', allWishes.length);
+    console.log('Data halaman ini:', pageWishes.length);
 
     wishesList.innerHTML = '';
 
