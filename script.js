@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wishesList = document.getElementById('wishes-list');
   let allWishes = [];
   let currentWishesPage = 1;
-  const WISHES_PER_PAGE = 3;
+  const WISHES_PER_PAGE = 1;
 
   // Load nama database dan validasi akses undangan
   async function loadGuestFromSupabase() {
